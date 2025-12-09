@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050505">
     <title>LISTVIEW STUDIO</title>
     <style>
         /* --- FONTS --- */
@@ -72,15 +73,14 @@
         /* --- NOISE OVERLAY (Refined) --- */
         .noise {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: -10%;
+            left: -10%;
+            width: 120vw;
+            height: 120vh;
             pointer-events: none;
             z-index: 999;
-            opacity: 0.05;
+            opacity: 0.03;
             background: url('https://grainy-gradients.vercel.app/noise.svg');
-            mix-blend-mode: overlay;
             animation: noise 0.5s steps(5) infinite;
         }
 
@@ -103,14 +103,18 @@
             display: flex;
             justify-content: space-between;
             z-index: 100;
-            mix-blend-mode: difference;
+            /* mix-blend-mode: difference; REMOVED from container to fix artifact */
             pointer-events: none;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
         }
         
-        .nav-item {
+        .nav-item, .nav-right {
+            mix-blend-mode: difference; /* Applied to children instead */
             pointer-events: auto;
+        }
+        
+        .nav-item {
             font-weight: 500;
             font-size: 1.2rem;
             letter-spacing: -0.02em;
@@ -122,12 +126,11 @@
             letter-spacing: 0.05em;
             line-height: 1.6;
             opacity: 0.8;
-            pointer-events: auto;
         }
 
         /* --- HERO --- */
         header {
-            height: 100vh;
+            height: calc(100vh + 1px);
             width: 100%;
             display: flex;
             align-items: center;
@@ -135,14 +138,16 @@
             position: relative;
             overflow: hidden;
             background-color: var(--bg);
+            margin-top: -1px;
+            padding-top: 1px;
         }
 
         .hero-video-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: -1%;
+            left: -1%;
+            width: 102%;
+            height: 102%;
             object-fit: cover;
             opacity: 0.3;
             filter: grayscale(100%) contrast(1.2);
@@ -153,10 +158,10 @@
         header::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: -1%;
+            left: -1%;
+            width: 102%;
+            height: 102%;
             z-index: 1;
             background-color: rgba(0, 0, 0, 0.6); /* Visible dark overlay */
             pointer-events: none;
@@ -166,14 +171,13 @@
         header::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: -1%;
+            left: -1%;
+            width: 102%;
+            height: 102%;
             z-index: 1;
             background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-            opacity: 0.4; /* Grain visibility */
-            mix-blend-mode: overlay;
+            opacity: 0.07; /* Grain visibility */
             pointer-events: none;
         }
 
@@ -540,6 +544,17 @@
             to { transform: translateX(-50%); }
         }
 
+        .top-patch {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--bg);
+            z-index: 10000;
+            pointer-events: none;
+        }
+
         /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 768px) {
             nav {
@@ -624,9 +639,12 @@
                 gap: 3rem;
                 text-align: left;
                 padding: 0 1.5rem;
+                align-items: flex-start;
             }
             .footer-right {
                 text-align: left;
+                padding: 0;
+                margin: 0;
             }
             .marquee {
                 font-size: 20vw;
@@ -647,7 +665,7 @@
     </style>
 </head>
 <body>
-
+    <div class="top-patch"></div>
     <div class="noise"></div>
 
     <nav>
@@ -750,10 +768,7 @@
                 <a href="https://instagram.com/listviewstudio" target="_blank" style="color: white; text-decoration: none;">INSTAGRAM @LISTVIEWSTUDIO</a><br>
                 <a href="https://x.com/listviewstudio" target="_blank" style="color: white; text-decoration: none;">X @LISTVIEWSTUDIO</a>
             </div>
-            <div class="footer-right">
-                LISTVIEW LLC<br>
-                ALL RIGHTS RESERVED
-            </div>
+            <div class="footer-right">LISTVIEW LLC<br>ALL RIGHTS RESERVED</div>
         </div>
         <div class="divider"></div>
         <div class="marquee-container">
