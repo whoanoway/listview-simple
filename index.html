@@ -347,7 +347,11 @@
 
         /* --- ABOUT CONTENT (Imported) --- */
         .about-hero {
-            padding: 12rem 3rem 6rem;
+            padding: 6rem 3rem;
+            /* Vertical centering */
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
         }
         .big-text {
             font-size: 6vw;
@@ -361,7 +365,7 @@
             grid-template-columns: 1fr 1fr;
         }
         .service-item {
-            padding: 4rem 3rem;
+            padding: 6rem 3rem;
             min-height: 40vh;
             display: flex;
             flex-direction: column;
@@ -501,13 +505,13 @@
             padding: 6rem 0;
             display: flex;
             flex-direction: column;
-            gap: 4rem;
+            gap: 6rem;
         }
 
         .footer-top {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center; /* Centered vertically */
             font-size: 1.5rem;
             font-weight: 400;
             padding: 0 3rem;
@@ -558,7 +562,8 @@
             }
 
             .about-hero {
-                padding: 8rem 1.5rem 4rem;
+                padding: 4rem 1.5rem;
+                min-height: auto;
             }
             .big-text {
                 font-size: 8vw;
@@ -572,7 +577,7 @@
                 display: none;
             }
             .service-item {
-                padding: 3rem 1.5rem;
+                padding: 4rem 1.5rem;
                 border-bottom: 1px solid #333;
                 min-height: auto;
             }
