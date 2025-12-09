@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LISTVIEW STUDIOS</title>
+    <title>LISTVIEW STUDIO</title>
     <style>
         /* --- FONTS --- */
         @font-face {
@@ -138,6 +138,34 @@
             opacity: 0.3;
             filter: grayscale(100%) contrast(1.2);
             transition: opacity 1s ease;
+        }
+
+        /* Hero Dark Overlay */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.6); /* Visible dark overlay */
+            pointer-events: none;
+        }
+
+        /* Hero Grain Overlay */
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.4; /* Grain visibility */
+            mix-blend-mode: overlay;
+            pointer-events: none;
         }
 
         .hero-title {
