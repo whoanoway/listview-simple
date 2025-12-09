@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LISTVIEW STUDIOS</title>
+    <style>
+        /* --- FONTS --- */
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            font-style: normal;
+            font-weight: 100;
+            src: url('ppneuemontreal/ppneuemontreal-thin.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            font-style: normal;
+            font-weight: 400;
+            src: url('ppneuemontreal/ppneuemontreal-book.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            font-style: italic;
+            font-weight: 400;
+            src: url('ppneuemontreal/ppneuemontreal-italic.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            font-style: normal;
+            font-weight: 500;
+            src: url('ppneuemontreal/ppneuemontreal-medium.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            font-style: normal;
+            font-weight: 700;
+            src: url('ppneuemontreal/ppneuemontreal-bold.woff') format('woff');
+        }
+
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --bg: #050505; /* Slightly softer black */
+            --text: #f0f0f0; /* Off-white for less eye strain */
+            --font-display: 'PP Neue Montreal', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+            --font-mono: 'PP Neue Montreal', 'Courier New', Courier, monospace; /* Keeping consistent */
+            --spacing: 20px; /* Tight vertical gaps */
+            --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Snappier ease */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 400;
+        }
+
+        /* --- NOISE OVERLAY (Refined) --- */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.05;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            mix-blend-mode: overlay;
+            animation: noise 0.5s steps(5) infinite;
+        }
+
+        @keyframes noise {
+            0% { background-position: 0 0; }
+            20% { background-position: -20% 10%; }
+            40% { background-position: 10% -30%; }
+            60% { background-position: -10% -10%; }
+            80% { background-position: 20% 20%; }
+            100% { background-position: 0 0; }
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+            mix-blend-mode: difference;
+            pointer-events: none;
+        }
+        
+        .nav-item {
+            pointer-events: auto;
+            font-weight: 500;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .nav-right {
+            text-align: right;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+            opacity: 0.8;
+            pointer-events: auto;
+        }
+
+        /* --- HERO --- */
+        header {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            filter: grayscale(100%) contrast(1.2);
+            transition: opacity 1s ease;
+        }
+
+        .hero-title {
+            position: relative;
+            z-index: 2;
+            font-size: 16vw;
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            font-weight: 400; /* Lighter weight for elegance */
+            text-align: center;
+            mix-blend-mode: difference;
+        }
+
+        /* --- FEED SECTION --- */
+        .feed-container {
+            width: 100%;
+            padding-bottom: 0;
+            padding-top: var(--spacing);
+        }
+
+        .project-block {
+            position: relative;
+            width: 100%;
+            margin-bottom: var(--spacing);
+            display: block;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .media-wrapper {
+            width: 100%;
+            height: 90vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .media-wrapper img, 
+        .media-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s var(--transition), filter 0.4s var(--transition);
+            filter: grayscale(100%) contrast(1.1);
+            transform: scale(1.01);
+        }
+
+        /* Hover: Subtle color return and scale */
+        .project-block:hover .media-wrapper img {
+            /* transform: scale(1.08); */ /* Removed hover effect */
+            /* filter: grayscale(0%) contrast(1); */
+        }
+
+        .project-meta {
+            position: absolute;
+            bottom: 3rem;
+            left: 3rem;
+            z-index: 10;
+            pointer-events: none;
+            mix-blend-mode: difference;
+        }
+
+        .p-client {
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #fff;
+            color: #fff;
+            background: transparent;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 50px; /* Pill shape */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s var(--transition);
+        }
+
+        .project-block:hover .p-client {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .p-title {
+            font-size: 5vw;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        /* --- ASYMMETRICAL GRID --- */
+        .grid-section {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr; /* Asymmetry */
+            width: 100%;
+            border-top: 1px solid #333;
+        }
+        
+        .grid-item {
+            position: relative;
+            height: 60vh;
+            border-right: 1px solid #333;
+            overflow: hidden;
+        }
+        
+        .grid-item:last-child {
+            border-right: none;
+        }
+        
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: all 0.4s var(--transition);
+        }
+        
+        .grid-item:hover img {
+            /* filter: grayscale(0%); */ /* Removed hover effect */
+            /* transform: scale(1.05); */
+        }
+
+        .grid-overlay {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            top: auto;
+            transform: none;
+            text-align: left;
+            opacity: 1; /* Always visible but subtle */
+            z-index: 5;
+            mix-blend-mode: difference;
+        }
+
+        .grid-overlay h2 {
+            font-weight: 400;
+            font-size: 2vw;
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- ABOUT CONTENT (Imported) --- */
+        .about-hero {
+            padding: 12rem 3rem 6rem;
+            border-bottom: 1px solid #333;
+        }
+        .big-text {
+            font-size: 6vw;
+            line-height: 0.9;
+            font-weight: 400;
+            max-width: 90%;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid #333;
+        }
+        .service-item {
+            padding: 4rem 3rem;
+            border-right: 1px solid #333;
+            min-height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .service-item:last-child {
+            border-right: none;
+        }
+        
+        .service-item h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .service-list {
+            list-style: none;
+            opacity: 0.7;
+            line-height: 1.5;
+            font-size: 1.1rem;
+        }
+
+        .team {
+            padding: 6rem 3rem;
+            border-bottom: 1px solid #333;
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 2rem;
+            align-items: flex-end;
+        }
+        .team-title {
+            grid-column: 1 / -1;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.5;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .member {
+            width: 100%;
+            margin-bottom: 0;
+            display: block;
+        }
+        
+        .member-photo {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1/1; /* Default aspect ratio */
+            object-fit: cover;
+            filter: grayscale(100%);
+            border-radius: 0;
+            margin-bottom: 1rem;
+            transition: all 0.4s var(--transition);
+        }
+        
+        /* The 3rd member (4th child of grid because of title) is the team photo */
+        .team > .member:last-child .member-photo {
+            aspect-ratio: 16/9; /* Wider aspect ratio for team photo */
+            height: 100%; /* Ensure it fills the height if constrained */
+            object-fit: cover;
+        }
+
+        /* 
+           To force same visual height for all images regardless of width/aspect ratio:
+           We need to constrain the row height.
+           The grid naturally stretches items to fill the row height if align-items is stretch (default).
+           However, images maintain aspect ratio. 
+           
+           Let's use a fixed height approach or a padding-bottom hack if we want perfect alignment.
+           But since widths vary (1fr vs 2fr), equal height means different aspect ratios are effectively respected.
+           
+           If the user wants them to BE the same height physically on screen:
+           We can set a shared height on the images and let width adjust, 
+           BUT we are in a grid where width is the constraint.
+           
+           If width is 1 unit for members and 2 units for team,
+           and aspect ratio is 1:1 (square) for members, height is 1 unit.
+           For team photo to be same height (1 unit) with width 2 units, aspect ratio must be 2:1.
+           16/9 is 1.77:1, so it's close but not exactly 2:1.
+           
+           Let's calculate strictly:
+           Col 1: Width W, Height H. Aspect 1:1 -> H = W.
+           Col 3: Width 2W (approx due to gap), Height H. Aspect = 2W / H = 2W / W = 2:1.
+           
+           So we should set aspect-ratio of last item to roughly 2/1 to match heights.
+        */
+        
+        .team > .member:last-child .member-photo {
+            aspect-ratio: 2/1; 
+        }
+        
+        .member:hover .member-photo {
+            /* filter: grayscale(0%); */ /* Removed hover effect */
+            /* transform: scale(1.02); */
+        }
+        
+        .member-info {
+            position: relative;
+            text-align: left;
+        }
+
+        .member-name {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+        }
+        
+        .member-role {
+            font-family: var(--font-mono);
+            opacity: 0.6;
+            font-size: 0.9rem;
+            display: block;
+            color: #fff;
+        }
+
+        .contact-section {
+            padding: 6rem 3rem;
+            border-bottom: 1px solid #333;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .contact-item h3 {
+            font-size: 1rem;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+        .contact-item p, .contact-item a {
+            font-size: 2rem;
+            text-decoration: none;
+            color: #fff;
+            display: block;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 6rem 3rem;
+            border-top: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+        
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            padding: 2rem 0;
+        }
+
+        .marquee {
+            font-size: 12vw;
+            white-space: nowrap;
+            font-weight: 300;
+            letter-spacing: -0.05em;
+            animation: scroll 20s linear infinite;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* Scroll Reveal Animation Class */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s var(--transition);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="noise"></div>
+
+    <nav>
+        <div class="nav-item interactable" style="opacity: 1;">LISTVIEW&copy;</div>
+        <div class="nav-right interactable">
+            <a href="#about" style="color: white; text-decoration: none;">About</a><br>
+            <a href="#contact" style="color: white; text-decoration: none;">Contact</a>
+        </div>
+    </nav>
+
+    <header>
+        <img src="images/image1.png" class="hero-video-bg" alt="Showreel Background">
+        <h1 class="hero-title">
+            LISTVIEW<br>STUDIOS
+        </h1>
+    </header>
+
+    <section id="about" class="about-hero interactable">
+        <h1 class="big-text">
+            WE ARE A CREATIVE DESIGN STUDIO CRAFTING BRANDS AND PRODUCTS WITH A FOCUS ON SIMPLICITY, IMAGINATION, AND MEANINGFUL CONNECTION.
+        </h1>
+    </section>
+
+    <section class="services-grid">
+        <div class="service-item interactable">
+            <h2>CAPABILITIES</h2>
+            <ul class="service-list">
+                <li>Art Direction</li>
+                <li>Brand Identity</li>
+                <li>Software Development</li>
+                <li>Film Production</li>
+            </ul>
+        </div>
+        <div class="service-item interactable">
+            <h2>PHILOSOPHY</h2>
+            <ul class="service-list">
+                <p>We pursue clarity, embrace exploration, and craft digital worlds that resonate on a human level.</p>
+            </ul>
+        </div>
+    </section>
+
+    <section class="team">
+        <div class="team-title">LEADERSHIP</div>
+        <div class="member interactable">
+            <img src="images/john.jpg" alt="John McCaleb" class="member-photo">
+            <div class="member-info">
+                <div class="member-name">JOHN MCCALEB</div>
+                <div class="member-role">CREATIVE DIRECTOR</div>
+            </div>
+        </div>
+        <div class="member interactable">
+            <img src="images/vince.png" alt="Vincent Salgado" class="member-photo">
+            <div class="member-info">
+                <div class="member-name">VINCENT SALGADO</div>
+                <div class="member-role">TECHNICAL LEAD</div>
+            </div>
+        </div>
+        <div class="member interactable">
+            <img src="images/team.jpg" alt="Listview Team" class="member-photo">
+            <div class="member-info">
+                <div class="member-name">THE STUDIO</div>
+                <div class="member-role">WORLDWIDE</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-grid">
+            <div class="contact-item interactable">
+                <h3>EMAIL</h3>
+                <a href="mailto:hello@listview.studio">hello@listview.studio</a>
+            </div>
+            <div class="contact-item interactable">
+                <h3>FAX</h3>
+                <p>NUMBER NOT AVAILABLE</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-top interactable">
+            <div>
+                <a href="mailto:hello@listview.studio" style="color: white; text-decoration: none;">HELLO@LISTVIEW.STUDIO</a><br>
+                <a href="https://instagram.com/listviewstudio" target="_blank" style="color: white; text-decoration: none;">INSTAGRAM @LISTVIEWSTUDIO</a><br>
+                <a href="https://x.com/listviewstudio" target="_blank" style="color: white; text-decoration: none;">X @LISTVIEWSTUDIO</a>
+            </div>
+            <div style="text-align: right;">
+                LISTVIEW LLC<br>
+                ALL RIGHTS RESERVED
+            </div>
+        </div>
+        <div class="marquee-container">
+            <div class="marquee">LISTVIEW STUDIOS &mdash; WORLDWIDE &mdash; MOTION IS MEANING &mdash; LISTVIEW STUDIOS &mdash; WORLDWIDE &mdash; </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal Logic
+        const revealElements = document.querySelectorAll('.about-hero, .services-grid, .team, .contact-section, footer');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    entry.target.classList.add('reveal'); // Ensure class is present
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        revealElements.forEach(el => {
+            el.classList.add('reveal');
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>

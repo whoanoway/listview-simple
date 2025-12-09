@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON GENESIS - LISTVIEW STUDIOS</title>
+    <style>
+        /* --- FONTS & VARS (Shared) --- */
+        @font-face { font-family: 'PP Neue Montreal'; src: url('ppneuemontreal/ppneuemontreal-thin.woff') format('woff'); font-weight: 100; font-style: normal; }
+        @font-face { font-family: 'PP Neue Montreal'; src: url('ppneuemontreal/ppneuemontreal-book.woff') format('woff'); font-weight: 400; font-style: normal; }
+        @font-face { font-family: 'PP Neue Montreal'; src: url('ppneuemontreal/ppneuemontreal-medium.woff') format('woff'); font-weight: 500; font-style: normal; }
+        @font-face { font-family: 'PP Neue Montreal'; src: url('ppneuemontreal/ppneuemontreal-bold.woff') format('woff'); font-weight: 700; font-style: normal; }
+
+        :root {
+            --bg: #050505;
+            --text: #f0f0f0;
+            --font-display: 'PP Neue Montreal', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+            --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 999; opacity: 0.05;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            mix-blend-mode: overlay;
+        }
+
+        .cursor {
+            position: fixed; width: 12px; height: 12px; background: #ffffff;
+            border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none;
+            z-index: 10000; mix-blend-mode: exclusion;
+            transition: all 0.15s ease;
+        }
+        .cursor.active {
+            width: 80px; height: 80px; background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px); border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 2.5rem 3rem;
+            display: flex; justify-content: space-between; z-index: 100;
+            mix-blend-mode: difference; pointer-events: none;
+        }
+        .nav-item, .nav-right { pointer-events: auto; font-weight: 500; }
+        .nav-item { font-size: 1.2rem; text-decoration: none; color: white; }
+        .nav-right { text-align: right; font-size: 0.85rem; line-height: 1.6; opacity: 0.8; }
+
+        /* --- PROJECT CONTENT --- */
+        .project-hero {
+            height: 100vh; width: 100%; position: relative;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        
+        .hero-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.4; filter: grayscale(100%);
+        }
+
+        .project-title {
+            position: relative; z-index: 2; font-size: 12vw; line-height: 0.9;
+            text-align: center; mix-blend-mode: difference;
+        }
+
+        .project-info {
+            display: grid; grid-template-columns: 1fr 1fr;
+            padding: 4rem 3rem; border-top: 1px solid #333; margin-top: -1px;
+            position: relative; z-index: 10; background: var(--bg);
+        }
+
+        .info-col h3 { font-size: 0.8rem; margin-bottom: 1rem; opacity: 0.6; }
+        .info-col p { font-size: 1.5rem; line-height: 1.2; max-width: 90%; }
+
+        .gallery {
+            display: grid; grid-template-columns: 1fr; gap: 20px;
+            padding: 20px 0;
+        }
+
+        .gallery img {
+            width: 100%; height: auto; display: block;
+            filter: grayscale(100%); transition: filter 0.4s var(--transition);
+        }
+        .gallery img:hover { filter: grayscale(0%); }
+
+        .next-project {
+            padding: 10rem 3rem; text-align: center; border-top: 1px solid #333;
+        }
+        .next-link {
+            font-size: 8vw; text-decoration: none; color: var(--text);
+            transition: opacity 0.3s;
+        }
+        .next-link:hover { opacity: 0.5; }
+
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="cursor"></div>
+
+    <nav>
+        <a href="index.html" class="nav-item interactable">BACK</a>
+        <div class="nav-right interactable">
+            LISTVIEW<br>STUDIOS
+        </div>
+    </nav>
+
+    <header class="project-hero">
+        <img src="images/image3.png" class="hero-img" alt="Hero">
+        <h1 class="project-title">NEON<br>GENESIS</h1>
+    </header>
+
+    <div class="project-info">
+        <div class="info-col">
+            <h3>CLIENT</h3>
+            <p>SONY MUSIC</p>
+            <br>
+            <h3>YEAR</h3>
+            <p>2025</p>
+        </div>
+        <div class="info-col">
+            <h3>Brief</h3>
+            <p>A cyberpunk-inspired visualizer for the latest chart-topping electronic album. We explored light, reflection, and dystopian cityscapes to create a world that feels both futuristic and decayed.</p>
+        </div>
+    </div>
+
+    <div class="gallery">
+        <img src="images/image3.png" class="interactable">
+        <img src="images/image6.png" class="interactable">
+    </div>
+
+    <div class="next-project">
+        <a href="project-autopilot.html" class="next-link interactable">NEXT: AUTOPILOT &rarr;</a>
+    </div>
+
+    <script>
+        const cursor = document.querySelector('.cursor');
+        const interactables = document.querySelectorAll('.interactable');
+        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+        });
+    </script>
+</body>
+</html>
